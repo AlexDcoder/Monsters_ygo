@@ -89,28 +89,22 @@ class YugiohDataset(Dataset):
         label = self.mapa_racas[item['raca']]
         return imagem, label
 
-
-# Outro dataset baseado em DataFrame
-class CartaDataset(Dataset):
+class YuGiOhDatasetDataFrame(Dataset):
     def __init__(self, dataframe, transform=None):
-        self.df = dataframe
+        self.dataframe = dataframe
         self.transform = transform
-
+        
     def __len__(self):
-        return len(self.df)
-
+        return len(self.dataframe)
+    
     def __getitem__(self, idx):
-        img_path = self.df.iloc[idx]['caminho_imagem']
-
-        if not os.path.exists(img_path):
-            raise FileNotFoundError(f"Imagem não encontrada: {img_path}")
-
+        img_path = self.dataframe.iloc[idx]['caminho_imagem']
         image = Image.open(img_path).convert('RGB')
-        label = self.df.iloc[idx]['raca_codificada']
-
+        label = self.dataframe.iloc[idx]['label']
+        
         if self.transform:
             image = self.transform(image)
-
+            
         return image, label
 
 
